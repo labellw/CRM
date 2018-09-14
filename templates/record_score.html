@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <script src="/static/js/record_score.js"></script>
+
+</head>
+<body>
+
+<h3>录入{{ cls_record.class_obj }}day{{ cls_record.day_num }}成绩</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-1">
+            <form action="" method="post">
+                <table class="table-hover table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>考勤</th>
+                        <th>成绩</th>
+                        <th>批语</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for studentstudyrecord in studentstudyrecord_list %}
+                        <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ studentstudyrecord.student }}</td>
+                        <td>{{ studentstudyrecord.get_record_display }}</td>
+                        <td>
+                            <select name="score_{{ studentstudyrecord.pk }}" class="score" id="" sid="{{ studentstudyrecord.pk }}">
+                                {% for item in score_choices %}
+                                    {% if studentstudyrecord.score == item.0 %}
+                                        <option selected value="{{ item.0 }}">{{ item.1 }}</option>
+                                    {% endif %}
+                                    <option  value="{{ item.0 }}">{{ item.1 }}</option>
+
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <textarea name="homework_note_{{ studentstudyrecord.pk }}" sid="{{ studentstudyrecord.pk }}" cols="30" rows="4">{{ studentstudyrecord.homework_note|default:"" }}</textarea>
+                        </td>
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+                <button class="btn btn-success pull-right">保存</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

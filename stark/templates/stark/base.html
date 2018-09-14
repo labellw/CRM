@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7/css/bootstrap.css">
+    <script src="/static/js/jquery-3.3.1.js"></script>
+    <link rel="stylesheet" href="/static/css/list_view.css">
+    <link rel="stylesheet" href="/static/css/base.css">
+    {% block css %}
+
+    {% endblock css %}
+
+
+</head>
+<body>
+
+<div class="header">
+    <p class="title">CRM</p>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-2">
+
+            {% for permission_dict in request.session.permission_menu_list%}
+                <p> <a href="{{ permission_dict.url }}">{{ permission_dict.title }}</a> </p>
+            {% endfor %}
+
+
+
+        </div>
+
+        <div class="col-md-8">
+            {% block content %}
+
+
+            {% endblock content %}
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+{% extends "stark/base.html" %}
+
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8 ">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">数据展示</h3>
+                    <a href="{{ add_url }}" id="aaa" class="btn btn-primary ">添加数据</a>
+                    {% if showlist.config_obj.search_fields %}
+                        <form id="search" class="form-inline pull-right" method="get" action="">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input name="q" type="text" class="form-control" id="exampleInputAmount"
+                                           placeholder="Search">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </form>
+
+                    {% endif %}
+
+
+
+
+                    <form action="" method="post">
+
+                        {% csrf_token %}
+                        <div id="action">
+                            <select name="action" id="" class="form-control form-inline pull-left"
+                                    style="width: 300px;display: inline-block">
+                                <option value="">-----------------------</option>
+                                {% for func_dict in showlist.get_new_action %}
+                                    <option value="{{ func_dict.name }}">{{ func_dict.text }}</option>
+                                {% endfor %}
+                            </select>
+                            <button class="btn btn-warning">Go</button>
+                        </div>
+
+
+                        <div class="panel-body">
+
+                            <table class="table table-striped table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    {% for foo in showlist.get_headers %}
+                                        <th>{{ foo }}</th>
+                                    {% endfor %}
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in showlist.get_body %}
+                                    <tr>
+                                        {% for item in data %}
+                                            <td>{{ item }}</td>
+                                        {% endfor %}
+
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+
+                    <div class="page pull-right">
+                        {{ showlist.pagination.ret_html|safe }}
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="filter_region">
+                {% for field,links in showlist.get_list_filter_links.items %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">By {{ field|upper }}</div>
+                        <div class="panel-body">
+                            {% for link in links %}
+                                <p>{{ link|safe }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+    </div>
+    <script>
+            $(".record").change(function () {
+                var pk = $(this).attr("pk");
+                var record = $(this).val();
+                $.ajax({
+                    url:"/stark/app01/studentstudyrecord/" + pk +"/edit_record/",
+                    type:"post",
+                    data:{
+                        record:record
+                    },
+                    success:function (data) {
+                        console.log(data)
+                    }
+
+                })
+
+            })
+    </script>
+
+{% endblock content %}
